@@ -25,10 +25,10 @@
 package pl.pitcer.rammachine.instruction
 
 import pl.pitcer.rammachine.RamMachine
-import pl.pitcer.rammachine.instruction.type.LoadInstruction
-import pl.pitcer.rammachine.instruction.type.ReadInstruction
-import pl.pitcer.rammachine.instruction.type.StoreInstruction
-import pl.pitcer.rammachine.instruction.type.WriteInstruction
+import pl.pitcer.rammachine.instruction.type.accumulator.LoadInstruction
+import pl.pitcer.rammachine.instruction.type.accumulator.StoreInstruction
+import pl.pitcer.rammachine.instruction.type.io.ReadInstruction
+import pl.pitcer.rammachine.instruction.type.io.WriteInstruction
 
 class InstructionFactory(
 	private val ramMachine: RamMachine

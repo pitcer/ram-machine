@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine.instruction.type
+package pl.pitcer.rammachine.instruction.type.accumulator
 
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-class ReadInstruction(
+class StoreInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
 	override val argument: InstructionArgument
 ) : Instruction {
 
-	override val name: String = "read"
+	override val name: String = "store"
 
 	override fun make() {
-		val value = this.ramMachine.readFromInputTape()
+		val value = this.ramMachine.getFromAccumulator()
 		val index = this.argument.value
 		this.ramMachine.putInMemory(index, value)
 	}
