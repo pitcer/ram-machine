@@ -73,8 +73,16 @@ class InstructionParser(
 	}
 
 	private fun parseArgument(argument: String): InstructionArgument {
-		val flag = ArgumentFlag.getArgumentFlag(argument)
-		val argumentWithoutFlag = argument.removePrefix(flag.flag)
-		return InstructionArgument(flag, argumentWithoutFlag)
+		val flag = getArgumentFlag(argument)
+		val prefix = flag.flag
+		val argumentValue = if (prefix == null) argument else argument.removePrefix(prefix)
+		return InstructionArgument(flag, argumentValue)
+	}
+
+	private fun getArgumentFlag(argument: String): ArgumentFlag {
+		return ArgumentFlag.values().firstOrNull {
+			val flag = it.flag
+			flag != null && argument.startsWith(flag)
+		} ?: ArgumentFlag.MEMORY_REFERENCE
 	}
 }

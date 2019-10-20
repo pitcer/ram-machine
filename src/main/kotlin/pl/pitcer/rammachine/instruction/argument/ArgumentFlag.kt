@@ -25,18 +25,10 @@
 package pl.pitcer.rammachine.instruction.argument
 
 enum class ArgumentFlag(
-	val flag: String
+	val flag: String?
 ) {
 
-	MEMORY_REFERENCE(""),
+	MEMORY_REFERENCE(null),
 	VALUE("="),
 	INDIRECT_ADDRESSING("^");
-
-	companion object {
-		fun getArgumentFlag(argument: String): ArgumentFlag {
-			return values().first {
-				argument.startsWith(it.flag)
-			}
-		}
-	}
 }
