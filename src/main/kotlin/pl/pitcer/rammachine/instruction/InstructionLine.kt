@@ -22,31 +22,12 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine
+package pl.pitcer.rammachine.instruction
 
-import pl.pitcer.rammachine.instruction.Instruction
-import pl.pitcer.rammachine.instruction.InstructionParser
-import java.io.File
+import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-fun main(args: Array<String>) {
-	val inputTape = args.map {
-		it.toInt()
-	}
-	val ramMachine = RamMachine(inputTape)
-	val instructions = getInstructions(ramMachine)
-	val outputTape = ramMachine.run(instructions)
-	outputTape.forEach {
-		println(it)
-	}
-}
-
-private fun getInstructions(ramMachine: RamMachine): List<Instruction> {
-	val codeLines = getCodeLines()
-	val parser = InstructionParser(ramMachine, codeLines)
-	return parser.parseInstructions()
-}
-
-private fun getCodeLines(): List<String> {
-	val file = File("main.ram")
-	return file.readLines()
-}
+data class InstructionLine(
+	val label: String?,
+	val name: String,
+	val argument: InstructionArgument
+)

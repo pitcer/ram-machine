@@ -25,28 +25,45 @@
 package pl.pitcer.rammachine
 
 import pl.pitcer.rammachine.instruction.Instruction
-import pl.pitcer.rammachine.instruction.InstructionParser
-import java.io.File
 
-fun main(args: Array<String>) {
-	val inputTape = args.map {
-		it.toInt()
+class RamMachine(
+	private val inputTape: List<Int>
+) {
+
+	private val memory: MutableList<Int> = mutableListOf(1024)
+	private val outputTape: MutableList<Int> = mutableListOf()
+	private var inputTapeIndex = 0
+
+	fun run(instructions: List<Instruction>): List<Int> {
+		instructions.forEach {
+			it.make()
+		}
+		return this.outputTape
 	}
-	val ramMachine = RamMachine(inputTape)
-	val instructions = getInstructions(ramMachine)
-	val outputTape = ramMachine.run(instructions)
-	outputTape.forEach {
-		println(it)
+
+	fun readFromInputTape(): Int {
+		val value = this.inputTape[this.inputTapeIndex]
+		this.inputTapeIndex++
+		return value
 	}
-}
 
-private fun getInstructions(ramMachine: RamMachine): List<Instruction> {
-	val codeLines = getCodeLines()
-	val parser = InstructionParser(ramMachine, codeLines)
-	return parser.parseInstructions()
-}
+	fun writeToOutputTape(value: Int) {
+		this.outputTape.add(value)
+	}
 
-private fun getCodeLines(): List<String> {
-	val file = File("main.ram")
-	return file.readLines()
+	fun getFromAccumulator(): Int {
+		return getFromMemory(0)
+	}
+
+	fun putInAccumulator(value: Int) {
+		putInMemory(0, value)
+	}
+
+	fun getFromMemory(index: Int): Int {
+		return this.memory[index]
+	}
+
+	fun putInMemory(index: Int, value: Int) {
+		this.memory.add(index, value)
+	}
 }
