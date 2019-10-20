@@ -37,8 +37,8 @@ class WriteInstruction(
 	override val name: String = "write"
 
 	override fun make() {
-		val index = this.argument.value
-		val value = this.ramMachine.getFromMemory(index)
-		this.ramMachine.writeToOutputTape(value)
+		val argumentValue = this.argument.value
+		val memoryValue = this.ramMachine.getFromMemory(argumentValue)
+		this.ramMachine.writeToOutputTape(memoryValue)
 	}
 }

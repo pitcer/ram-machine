@@ -22,53 +22,30 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine
+package pl.pitcer.rammachine.instruction.type.arithmetic
 
+import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
+import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-class RamMachine(
-	private val inputTape: List<Int>
-) {
+abstract class ArithmeticInstruction(
+	override val ramMachine: RamMachine,
+	override val label: String?,
+	override val argument: InstructionArgument
+) : Instruction {
 
-	private val memory: MutableList<Int> = mutableListOf(1024)
-	private val outputTape: MutableList<Int> = mutableListOf()
-	private var inputTapeIndex = 0
-
-	fun run(instructions: List<Instruction>): List<Int> {
-		instructions.forEach {
-			it.make()
+	override fun make() {
+		val accumulatorValue = this.ramMachine.getFromAccumulator()
+		val argumentValue = this.argument.value
+		val value = when (this.argument.flag) {
+			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(argumentValue)
+			ArgumentFlag.VALUE -> argumentValue
+			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemoryIndirect(argumentValue)
 		}
-		return this.outputTape
+		val result = calculate(accumulatorValue, value)
+		this.ramMachine.putInAccumulator(result)
 	}
 
-	fun readFromInputTape(): Int {
-		val value = this.inputTape[this.inputTapeIndex]
-		this.inputTapeIndex++
-		return value
-	}
-
-	fun writeToOutputTape(value: Int) {
-		this.outputTape.add(value)
-	}
-
-	fun getFromAccumulator(): Int {
-		return getFromMemory(0)
-	}
-
-	fun putInAccumulator(value: Int) {
-		putInMemory(0, value)
-	}
-
-	fun getFromMemoryIndirect(indirectIndex: Int): Int {
-		val index = getFromMemory(indirectIndex)
-		return getFromMemory(index)
-	}
-
-	fun getFromMemory(index: Int): Int {
-		return this.memory[index]
-	}
-
-	fun putInMemory(index: Int, value: Int) {
-		this.memory.add(index, value)
-	}
+	abstract fun calculate(accumulatorValue: Int, value: Int): Int
 }

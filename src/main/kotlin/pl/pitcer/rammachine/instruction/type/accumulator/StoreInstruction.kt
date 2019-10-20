@@ -37,8 +37,8 @@ class StoreInstruction(
 	override val name: String = "store"
 
 	override fun make() {
-		val value = this.ramMachine.getFromAccumulator()
-		val index = this.argument.value
-		this.ramMachine.putInMemory(index, value)
+		val accumulatorValue = this.ramMachine.getFromAccumulator()
+		val argumentValue = this.argument.value
+		this.ramMachine.putInMemory(argumentValue, accumulatorValue)
 	}
 }

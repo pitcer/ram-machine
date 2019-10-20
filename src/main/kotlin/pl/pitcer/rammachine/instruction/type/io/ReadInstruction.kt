@@ -37,8 +37,8 @@ class ReadInstruction(
 	override val name: String = "read"
 
 	override fun make() {
-		val value = this.ramMachine.readFromInputTape()
-		val index = this.argument.value
-		this.ramMachine.putInMemory(index, value)
+		val inputTapeValue = this.ramMachine.readFromInputTape()
+		val argumentValue = this.argument.value
+		this.ramMachine.putInMemory(argumentValue, inputTapeValue)
 	}
 }

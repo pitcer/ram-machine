@@ -38,11 +38,11 @@ class LoadInstruction(
 	override val name: String = "load"
 
 	override fun make() {
-		val index = this.argument.value
+		val argumentValue = this.argument.value
 		val value = when (this.argument.flag) {
-			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(index)
-			ArgumentFlag.VALUE -> index
-			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemory(this.ramMachine.getFromMemory(index))
+			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(argumentValue)
+			ArgumentFlag.VALUE -> argumentValue
+			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemoryIndirect(argumentValue)
 		}
 		this.ramMachine.putInAccumulator(value)
 	}

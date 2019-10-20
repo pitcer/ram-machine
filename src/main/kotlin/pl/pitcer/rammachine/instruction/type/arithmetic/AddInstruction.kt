@@ -22,53 +22,20 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine
+package pl.pitcer.rammachine.instruction.type.arithmetic
 
-import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.RamMachine
+import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-class RamMachine(
-	private val inputTape: List<Int>
-) {
+class AddInstruction(
+	ramMachine: RamMachine,
+	label: String?,
+	argument: InstructionArgument
+) : ArithmeticInstruction(ramMachine, label, argument) {
 
-	private val memory: MutableList<Int> = mutableListOf(1024)
-	private val outputTape: MutableList<Int> = mutableListOf()
-	private var inputTapeIndex = 0
+	override val name: String = "add"
 
-	fun run(instructions: List<Instruction>): List<Int> {
-		instructions.forEach {
-			it.make()
-		}
-		return this.outputTape
-	}
-
-	fun readFromInputTape(): Int {
-		val value = this.inputTape[this.inputTapeIndex]
-		this.inputTapeIndex++
-		return value
-	}
-
-	fun writeToOutputTape(value: Int) {
-		this.outputTape.add(value)
-	}
-
-	fun getFromAccumulator(): Int {
-		return getFromMemory(0)
-	}
-
-	fun putInAccumulator(value: Int) {
-		putInMemory(0, value)
-	}
-
-	fun getFromMemoryIndirect(indirectIndex: Int): Int {
-		val index = getFromMemory(indirectIndex)
-		return getFromMemory(index)
-	}
-
-	fun getFromMemory(index: Int): Int {
-		return this.memory[index]
-	}
-
-	fun putInMemory(index: Int, value: Int) {
-		this.memory.add(index, value)
+	override fun calculate(accumulatorValue: Int, value: Int): Int {
+		return accumulatorValue + value
 	}
 }
