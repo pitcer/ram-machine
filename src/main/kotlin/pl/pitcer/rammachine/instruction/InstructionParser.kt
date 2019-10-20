@@ -60,7 +60,6 @@ class InstructionParser(
 	private fun parseArgument(argument: String): InstructionArgument {
 		val flag = ArgumentFlag.getArgumentFlag(argument)
 		val argumentWithoutFlag = argument.removePrefix(flag.flag)
-		val intArgument = argumentWithoutFlag.toInt()
-		return InstructionArgument(flag, intArgument)
+		return InstructionArgument(flag, argumentWithoutFlag)
 	}
 }

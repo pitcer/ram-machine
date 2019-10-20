@@ -25,6 +25,8 @@
 package pl.pitcer.rammachine
 
 import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.instruction.result.HaltResult
+import pl.pitcer.rammachine.instruction.result.JumpResult
 
 class RamMachine(
 	private val inputTape: List<Int>
@@ -33,20 +35,32 @@ class RamMachine(
 	private val memory: MutableList<Int> = mutableListOf(1024)
 	private val outputTape: MutableList<Int> = mutableListOf()
 	private var inputTapeIndex = 0
-	private var stopped: Boolean = false
 
-	fun run(instructions: List<Instruction>): List<Int> {
-		for (instruction in instructions) {
-			instruction.make()
-			if (this.stopped) {
-				break
+	fun run(instructions: List<Instruction>, startIndex: Int = 0): List<Int> {
+		for (index in startIndex..instructions.lastIndex) {
+			val instruction = instructions[index]
+			val result = instruction.make()
+			when (result) {
+				is JumpResult -> {
+					val label = result.label
+					val labeledInstructionIndex = getLabeledInstructionIndex(instructions, label)
+					if (labeledInstructionIndex != null) {
+						return run(instructions, labeledInstructionIndex)
+					}
+				}
+				is HaltResult -> return this.outputTape
 			}
 		}
 		return this.outputTape
 	}
 
-	fun stop() {
-		this.stopped = true
+	private fun getLabeledInstructionIndex(instructions: List<Instruction>, label: String): Int? {
+		for ((index, instruction) in instructions.withIndex()) {
+			if (instruction.label == label) {
+				return index
+			}
+		}
+		return null
 	}
 
 	fun readFromInputTape(): Int {

@@ -27,6 +27,8 @@ package pl.pitcer.rammachine.instruction.type.io
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
+import pl.pitcer.rammachine.instruction.result.InstructionResult
+import pl.pitcer.rammachine.instruction.result.OkResult
 
 class ReadInstruction(
 	override val ramMachine: RamMachine,
@@ -36,9 +38,10 @@ class ReadInstruction(
 
 	override val name: String = "read"
 
-	override fun make() {
+	override fun make(): InstructionResult {
 		val inputTapeValue = this.ramMachine.readFromInputTape()
-		val argumentValue = this.argument.value
+		val argumentValue = this.argument.value.toInt()
 		this.ramMachine.putInMemory(argumentValue, inputTapeValue)
+		return OkResult()
 	}
 }

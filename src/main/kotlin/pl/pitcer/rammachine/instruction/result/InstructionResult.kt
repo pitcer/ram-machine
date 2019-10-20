@@ -22,31 +22,6 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine.instruction.type.accumulator
+package pl.pitcer.rammachine.instruction.result
 
-import pl.pitcer.rammachine.RamMachine
-import pl.pitcer.rammachine.instruction.Instruction
-import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
-import pl.pitcer.rammachine.instruction.argument.InstructionArgument
-import pl.pitcer.rammachine.instruction.result.InstructionResult
-import pl.pitcer.rammachine.instruction.result.OkResult
-
-class LoadInstruction(
-	override val ramMachine: RamMachine,
-	override val label: String?,
-	override val argument: InstructionArgument
-) : Instruction {
-
-	override val name: String = "load"
-
-	override fun make(): InstructionResult {
-		val argumentValue = this.argument.value.toInt()
-		val value = when (this.argument.flag) {
-			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(argumentValue)
-			ArgumentFlag.VALUE -> argumentValue
-			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemoryIndirect(argumentValue)
-		}
-		this.ramMachine.putInAccumulator(value)
-		return OkResult()
-	}
-}
+interface InstructionResult

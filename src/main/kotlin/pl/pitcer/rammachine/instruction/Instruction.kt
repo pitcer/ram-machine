@@ -26,6 +26,7 @@ package pl.pitcer.rammachine.instruction
 
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
+import pl.pitcer.rammachine.instruction.result.InstructionResult
 
 interface Instruction {
 
@@ -34,5 +35,5 @@ interface Instruction {
 	val name: String
 	val argument: InstructionArgument
 
-	fun make()
+	fun make(): InstructionResult
 }

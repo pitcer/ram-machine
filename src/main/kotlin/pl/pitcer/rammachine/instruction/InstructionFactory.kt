@@ -34,6 +34,9 @@ import pl.pitcer.rammachine.instruction.type.arithmetic.MultiplyInstruction
 import pl.pitcer.rammachine.instruction.type.arithmetic.SubtractInstruction
 import pl.pitcer.rammachine.instruction.type.io.ReadInstruction
 import pl.pitcer.rammachine.instruction.type.io.WriteInstruction
+import pl.pitcer.rammachine.instruction.type.jump.JumpGreaterThanZeroInstruction
+import pl.pitcer.rammachine.instruction.type.jump.JumpInstruction
+import pl.pitcer.rammachine.instruction.type.jump.JumpZeroInstruction
 
 class InstructionFactory(
 	private val ramMachine: RamMachine
@@ -52,6 +55,9 @@ class InstructionFactory(
 			"mult" -> MultiplyInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			"div" -> DivideInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			"halt" -> HaltInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
+			"jump" -> JumpInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
+			"jzero" -> JumpZeroInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
+			"jgtz" -> JumpGreaterThanZeroInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			else -> throw IllegalArgumentException("Unknown instruction name: '$name'")
 		}
 	}

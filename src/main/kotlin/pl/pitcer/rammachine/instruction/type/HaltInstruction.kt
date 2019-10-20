@@ -27,6 +27,8 @@ package pl.pitcer.rammachine.instruction.type
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
+import pl.pitcer.rammachine.instruction.result.HaltResult
+import pl.pitcer.rammachine.instruction.result.InstructionResult
 
 class HaltInstruction(
 	override val ramMachine: RamMachine,
@@ -36,7 +38,7 @@ class HaltInstruction(
 
 	override val name: String = "halt"
 
-	override fun make() {
-		this.ramMachine.stop()
+	override fun make(): InstructionResult {
+		return HaltResult()
 	}
 }

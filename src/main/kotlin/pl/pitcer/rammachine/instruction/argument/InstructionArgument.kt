@@ -26,5 +26,5 @@ package pl.pitcer.rammachine.instruction.argument
 
 data class InstructionArgument(
 	val flag: ArgumentFlag,
-	val value: Int
+	val value: String
 )

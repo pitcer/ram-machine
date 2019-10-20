@@ -22,33 +22,24 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine.instruction.type.arithmetic
+package pl.pitcer.rammachine.instruction.type.jump
 
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
-import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 import pl.pitcer.rammachine.instruction.result.InstructionResult
-import pl.pitcer.rammachine.instruction.result.OkResult
+import pl.pitcer.rammachine.instruction.result.JumpResult
 
-abstract class ArithmeticInstruction(
+class JumpInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
 	override val argument: InstructionArgument
 ) : Instruction {
 
-	override fun make(): InstructionResult {
-		val accumulatorValue = this.ramMachine.getFromAccumulator()
-		val argumentValue = this.argument.value.toInt()
-		val value = when (this.argument.flag) {
-			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(argumentValue)
-			ArgumentFlag.VALUE -> argumentValue
-			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemoryIndirect(argumentValue)
-		}
-		val result = calculate(accumulatorValue, value)
-		this.ramMachine.putInAccumulator(result)
-		return OkResult()
-	}
+	override val name: String = "jump"
 
-	abstract fun calculate(accumulatorValue: Int, value: Int): Int
+	override fun make(): InstructionResult {
+		val argumentValue = this.argument.value
+		return JumpResult(argumentValue)
+	}
 }

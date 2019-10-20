@@ -27,6 +27,8 @@ package pl.pitcer.rammachine.instruction.type.io
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
+import pl.pitcer.rammachine.instruction.result.InstructionResult
+import pl.pitcer.rammachine.instruction.result.OkResult
 
 class WriteInstruction(
 	override val ramMachine: RamMachine,
@@ -36,9 +38,10 @@ class WriteInstruction(
 
 	override val name: String = "write"
 
-	override fun make() {
-		val argumentValue = this.argument.value
+	override fun make(): InstructionResult {
+		val argumentValue = this.argument.value.toInt()
 		val memoryValue = this.ramMachine.getFromMemory(argumentValue)
 		this.ramMachine.writeToOutputTape(memoryValue)
+		return OkResult()
 	}
 }
