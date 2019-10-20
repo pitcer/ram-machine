@@ -42,9 +42,24 @@ class InstructionParser(
 	}
 
 	private fun parseInstruction(codeLine: String): Instruction {
-		val split = codeLine.split(" ")
+		val trimmed = codeLine.trimRedundantWhitespaces()
+		val split = trimmed.split(" ")
 		val instructionLine = getInstructionLine(split)
 		return this.instructionFactory.createInstruction(instructionLine)
+	}
+
+	private fun String.trimRedundantWhitespaces(): String {
+		val builder = StringBuilder()
+		var previousCharacter = this[0]
+		for (character in this) {
+			if (character != '\t') {
+				if (previousCharacter != ' ' || character != ' ') {
+					builder.append(character)
+				}
+				previousCharacter = character
+			}
+		}
+		return builder.toString()
 	}
 
 	private fun getInstructionLine(split: List<String>): InstructionLine {
