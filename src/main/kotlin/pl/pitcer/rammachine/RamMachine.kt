@@ -32,7 +32,7 @@ class RamMachine(
 	private val inputTape: List<Int>
 ) {
 
-	private val memory: MutableList<Int> = mutableListOf(1024)
+	private val memory: IntArray = IntArray(1024)
 	private val outputTape: MutableList<Int> = mutableListOf()
 	private var inputTapeIndex = 0
 
@@ -91,6 +91,6 @@ class RamMachine(
 	}
 
 	fun putInMemory(index: Int, value: Int) {
-		this.memory.add(index, value)
+		this.memory[index] = value
 	}
 }
