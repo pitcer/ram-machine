@@ -22,27 +22,23 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine.instruction
+package pl.pitcer.rammachine.instruction.type
 
 import pl.pitcer.rammachine.RamMachine
-import pl.pitcer.rammachine.instruction.type.LoadInstruction
-import pl.pitcer.rammachine.instruction.type.ReadInstruction
-import pl.pitcer.rammachine.instruction.type.StoreInstruction
-import pl.pitcer.rammachine.instruction.type.WriteInstruction
+import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-class InstructionFactory(
-	private val ramMachine: RamMachine
-) {
+class StoreInstruction(
+	override val ramMachine: RamMachine,
+	override val label: String?,
+	override val argument: InstructionArgument
+) : Instruction {
 
-	fun createInstruction(instructionLine: InstructionLine): Instruction {
-		val name = instructionLine.name
-		val nameLowered = name.toLowerCase()
-		return when (nameLowered) {
-			"read" -> ReadInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"write" -> WriteInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"load" -> LoadInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"store" -> StoreInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			else -> throw IllegalArgumentException("Unknown instruction name: '$name'")
-		}
+	override val name: String = "store"
+
+	override fun make() {
+		val value = this.ramMachine.getFromAccumulator()
+		val index = this.argument.value
+		this.ramMachine.putInMemory(index, value)
 	}
 }
