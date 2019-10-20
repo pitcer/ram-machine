@@ -22,61 +22,21 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.rammachine
+package pl.pitcer.rammachine.instruction.type
 
+import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-class RamMachine(
-	private val inputTape: List<Int>
-) {
+class HaltInstruction(
+	override val ramMachine: RamMachine,
+	override val label: String?,
+	override val argument: InstructionArgument
+) : Instruction {
 
-	private val memory: MutableList<Int> = mutableListOf(1024)
-	private val outputTape: MutableList<Int> = mutableListOf()
-	private var inputTapeIndex = 0
-	private var stopped: Boolean = false
+	override val name: String = "halt"
 
-	fun run(instructions: List<Instruction>): List<Int> {
-		for (instruction in instructions) {
-			instruction.make()
-			if (this.stopped) {
-				break
-			}
-		}
-		return this.outputTape
-	}
-
-	fun stop() {
-		this.stopped = true
-	}
-
-	fun readFromInputTape(): Int {
-		val value = this.inputTape[this.inputTapeIndex]
-		this.inputTapeIndex++
-		return value
-	}
-
-	fun writeToOutputTape(value: Int) {
-		this.outputTape.add(value)
-	}
-
-	fun getFromAccumulator(): Int {
-		return getFromMemory(0)
-	}
-
-	fun putInAccumulator(value: Int) {
-		putInMemory(0, value)
-	}
-
-	fun getFromMemoryIndirect(indirectIndex: Int): Int {
-		val index = getFromMemory(indirectIndex)
-		return getFromMemory(index)
-	}
-
-	fun getFromMemory(index: Int): Int {
-		return this.memory[index]
-	}
-
-	fun putInMemory(index: Int, value: Int) {
-		this.memory.add(index, value)
+	override fun make() {
+		this.ramMachine.stop()
 	}
 }

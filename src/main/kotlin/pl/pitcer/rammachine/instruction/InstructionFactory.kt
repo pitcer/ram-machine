@@ -25,6 +25,7 @@
 package pl.pitcer.rammachine.instruction
 
 import pl.pitcer.rammachine.RamMachine
+import pl.pitcer.rammachine.instruction.type.HaltInstruction
 import pl.pitcer.rammachine.instruction.type.accumulator.LoadInstruction
 import pl.pitcer.rammachine.instruction.type.accumulator.StoreInstruction
 import pl.pitcer.rammachine.instruction.type.arithmetic.AddInstruction
@@ -50,6 +51,7 @@ class InstructionFactory(
 			"sub" -> SubtractInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			"mult" -> MultiplyInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			"div" -> DivideInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
+			"halt" -> HaltInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
 			else -> throw IllegalArgumentException("Unknown instruction name: '$name'")
 		}
 	}
