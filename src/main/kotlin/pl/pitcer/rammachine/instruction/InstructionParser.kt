@@ -35,17 +35,32 @@ class InstructionParser(
 
 	fun parseInstructions(): List<Instruction> {
 		return this.codeLines.filterNot {
-			it.isBlank()
+			it.trimComments()
+				.isBlank()
 		}.map {
 			parseInstruction(it)
 		}.toList()
 	}
 
 	private fun parseInstruction(codeLine: String): Instruction {
-		val trimmed = codeLine.trimRedundantWhitespaces()
+		val trimmed = codeLine
+			.trimComments()
+			.trimRedundantWhitespaces()
+			.trim()
 		val split = trimmed.split(" ")
 		val instructionLine = getInstructionLine(split)
 		return this.instructionFactory.createInstruction(instructionLine)
+	}
+
+	private fun String.trimComments(): String {
+		val builder = StringBuilder()
+		for (character in this) {
+			if (character == '#') {
+				return builder.toString()
+			}
+			builder.append(character)
+		}
+		return builder.toString()
 	}
 
 	private fun String.trimRedundantWhitespaces(): String {
