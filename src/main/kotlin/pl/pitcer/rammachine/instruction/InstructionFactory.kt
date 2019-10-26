@@ -42,22 +42,22 @@ class InstructionFactory(
 	private val ramMachine: RamMachine
 ) {
 
-	fun createInstruction(instructionLine: InstructionLine): Instruction {
-		val name = instructionLine.name
+	fun createInstruction(line: InstructionLine): Instruction {
+		val name = line.name
 		val nameLowered = name.toLowerCase()
 		return when (nameLowered) {
-			"read" -> ReadInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"write" -> WriteInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"load" -> LoadInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"store" -> StoreInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"add" -> AddInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"sub" -> SubtractInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"mult" -> MultiplyInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"div" -> DivideInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"halt" -> HaltInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"jump" -> JumpInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"jzero" -> JumpZeroInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
-			"jgtz" -> JumpGreaterThanZeroInstruction(this.ramMachine, instructionLine.label, instructionLine.argument)
+			"read" -> ReadInstruction(this.ramMachine, line.label, line.argument)
+			"write" -> WriteInstruction(this.ramMachine, line.label, line.argument)
+			"load" -> LoadInstruction(this.ramMachine, line.label, line.argument)
+			"store" -> StoreInstruction(this.ramMachine, line.label, line.argument)
+			"add" -> AddInstruction(this.ramMachine, line.label, line.argument)
+			"sub" -> SubtractInstruction(this.ramMachine, line.label, line.argument)
+			"mult" -> MultiplyInstruction(this.ramMachine, line.label, line.argument)
+			"div" -> DivideInstruction(this.ramMachine, line.label, line.argument)
+			"halt" -> HaltInstruction(this.ramMachine, line.label, line.argument)
+			"jump" -> JumpInstruction(this.ramMachine, line.label, line.argument)
+			"jzero" -> JumpZeroInstruction(this.ramMachine, line.label, line.argument)
+			"jgtz" -> JumpGreaterThanZeroInstruction(this.ramMachine, line.label, line.argument)
 			else -> throw IllegalArgumentException("Unknown instruction name: '$name'")
 		}
 	}

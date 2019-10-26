@@ -24,10 +24,38 @@
 
 package pl.pitcer.rammachine.instruction
 
+import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
-data class InstructionLine(
-	val label: String?,
+class InstructionLine(
+	label: String?,
 	val name: String,
+	argument: String?
+) {
+
+	val label: String?
 	val argument: InstructionArgument?
-)
+
+	init {
+		this.label = label?.let(this::parseLabel)
+		this.argument = argument?.let(this::parseArgument)
+	}
+
+	private fun parseLabel(label: String): String {
+		return label.removeSuffix(":")
+	}
+
+	private fun parseArgument(argument: String): InstructionArgument {
+		val flag = getArgumentFlag(argument)
+		val prefix = flag.flag
+		val argumentValue = if (prefix == null) argument else argument.removePrefix(prefix)
+		return InstructionArgument(flag, argumentValue)
+	}
+
+	private fun getArgumentFlag(argument: String): ArgumentFlag {
+		return ArgumentFlag.values().firstOrNull {
+			val flag = it.flag
+			flag != null && argument.startsWith(flag)
+		} ?: ArgumentFlag.MEMORY_REFERENCE
+	}
+}

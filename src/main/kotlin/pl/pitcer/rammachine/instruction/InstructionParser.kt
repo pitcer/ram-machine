@@ -25,8 +25,6 @@
 package pl.pitcer.rammachine.instruction
 
 import pl.pitcer.rammachine.RamMachine
-import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
-import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 
 class InstructionParser(
 	private val ramMachine: RamMachine,
@@ -64,23 +62,10 @@ class InstructionParser(
 
 	private fun getInstructionLine(split: List<String>): InstructionLine {
 		return when {
-			split.size == 3 -> InstructionLine(split[0], split[1], parseArgument(split[2]))
-			split.size == 2 -> InstructionLine(null, split[0], parseArgument(split[1]))
-			else -> InstructionLine(null, split[0], null)
+			split.size == 3 -> InstructionLine(split[0], split[1], split[2])
+			split.size == 2 -> InstructionLine(null, split[0], split[1])
+			split.size == 1 -> InstructionLine(null, split[0], null)
+			else -> throw RuntimeException()
 		}
-	}
-
-	private fun parseArgument(argument: String): InstructionArgument {
-		val flag = getArgumentFlag(argument)
-		val prefix = flag.flag
-		val argumentValue = if (prefix == null) argument else argument.removePrefix(prefix)
-		return InstructionArgument(flag, argumentValue)
-	}
-
-	private fun getArgumentFlag(argument: String): ArgumentFlag {
-		return ArgumentFlag.values().firstOrNull {
-			val flag = it.flag
-			flag != null && argument.startsWith(flag)
-		} ?: ArgumentFlag.MEMORY_REFERENCE
 	}
 }
