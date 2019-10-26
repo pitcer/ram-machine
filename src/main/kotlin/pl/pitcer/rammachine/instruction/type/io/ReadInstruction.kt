@@ -26,6 +26,7 @@ package pl.pitcer.rammachine.instruction.type.io
 
 import pl.pitcer.rammachine.RamMachine
 import pl.pitcer.rammachine.instruction.Instruction
+import pl.pitcer.rammachine.instruction.argument.ArgumentFlag
 import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 import pl.pitcer.rammachine.instruction.result.InstructionResult
 import pl.pitcer.rammachine.instruction.result.OkResult
@@ -40,8 +41,14 @@ class ReadInstruction(
 
 	override fun make(): InstructionResult {
 		val inputTapeValue = this.ramMachine.readFromInputTape()
-		val argumentValue = this.argument?.value?.toInt() ?: throw RuntimeException()
-		this.ramMachine.putInMemory(argumentValue, inputTapeValue)
+		val argument = this.argument ?: throw RuntimeException()
+		val argumentValue = argument.value.toInt()
+		val value = when (argument.flag) {
+			ArgumentFlag.MEMORY_REFERENCE -> argumentValue
+			ArgumentFlag.VALUE -> throw RuntimeException()
+			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemory(argumentValue)
+		}
+		this.ramMachine.putInMemory(value, inputTapeValue)
 		return OkResult()
 	}
 }
