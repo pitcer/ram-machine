@@ -34,7 +34,9 @@ class InstructionParser(
 	private val instructionFactory = InstructionFactory(this.ramMachine)
 
 	fun parseInstructions(): List<Instruction> {
-		return this.codeLines.map {
+		return this.codeLines.filterNot {
+			it.isBlank()
+		}.map {
 			parseInstruction(it)
 		}.toList()
 	}
