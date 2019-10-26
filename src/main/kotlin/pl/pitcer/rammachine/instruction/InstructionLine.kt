@@ -29,5 +29,5 @@ import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 data class InstructionLine(
 	val label: String?,
 	val name: String,
-	val argument: InstructionArgument
+	val argument: InstructionArgument?
 )

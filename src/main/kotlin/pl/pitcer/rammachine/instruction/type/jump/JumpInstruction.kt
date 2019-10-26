@@ -33,13 +33,13 @@ import pl.pitcer.rammachine.instruction.result.JumpResult
 class JumpInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override val name: String = "jump"
 
 	override fun make(): InstructionResult {
-		val argumentValue = this.argument.value
+		val argumentValue = this.argument?.value ?: throw RuntimeException()
 		return JumpResult(argumentValue)
 	}
 }

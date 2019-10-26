@@ -34,15 +34,16 @@ import pl.pitcer.rammachine.instruction.result.OkResult
 class StoreInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override val name: String = "store"
 
 	override fun make(): InstructionResult {
 		val accumulatorValue = this.ramMachine.getFromAccumulator()
-		val argumentValue = this.argument.value.toInt()
-		val value = when (this.argument.flag) {
+		val argument = this.argument ?: throw RuntimeException()
+		val argumentValue = argument.value.toInt()
+		val value = when (argument.flag) {
 			ArgumentFlag.MEMORY_REFERENCE -> argumentValue
 			ArgumentFlag.VALUE -> throw RuntimeException()
 			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemory(argumentValue)

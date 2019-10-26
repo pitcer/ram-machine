@@ -33,7 +33,7 @@ interface Instruction {
 	val ramMachine: RamMachine
 	val label: String?
 	val name: String
-	val argument: InstructionArgument
+	val argument: InstructionArgument?
 
 	fun make(): InstructionResult
 }

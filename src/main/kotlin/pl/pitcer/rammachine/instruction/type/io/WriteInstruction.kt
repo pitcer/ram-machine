@@ -33,13 +33,13 @@ import pl.pitcer.rammachine.instruction.result.OkResult
 class WriteInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override val name: String = "write"
 
 	override fun make(): InstructionResult {
-		val argumentValue = this.argument.value.toInt()
+		val argumentValue = this.argument?.value?.toInt() ?: throw RuntimeException()
 		val memoryValue = this.ramMachine.getFromMemory(argumentValue)
 		this.ramMachine.writeToOutputTape(memoryValue)
 		return OkResult()

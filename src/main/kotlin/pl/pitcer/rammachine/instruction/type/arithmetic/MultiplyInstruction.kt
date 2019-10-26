@@ -30,7 +30,7 @@ import pl.pitcer.rammachine.instruction.argument.InstructionArgument
 class MultiplyInstruction(
 	ramMachine: RamMachine,
 	label: String?,
-	argument: InstructionArgument
+	argument: InstructionArgument?
 ) : ArithmeticInstruction(ramMachine, label, argument) {
 
 	override val name: String = "mult"

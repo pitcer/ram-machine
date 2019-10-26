@@ -63,13 +63,11 @@ class InstructionParser(
 	}
 
 	private fun getInstructionLine(split: List<String>): InstructionLine {
-		val (label, name, argument) = if (split.size == 3) {
-			Triple(split[0], split[1], split[2])
-		} else {
-			Triple(null, split[0], split[1])
+		return when {
+			split.size == 3 -> InstructionLine(split[0], split[1], parseArgument(split[2]))
+			split.size == 2 -> InstructionLine(null, split[0], parseArgument(split[1]))
+			else -> InstructionLine(null, split[0], null)
 		}
-		val instructionArgument = parseArgument(argument)
-		return InstructionLine(label, name, instructionArgument)
 	}
 
 	private fun parseArgument(argument: String): InstructionArgument {

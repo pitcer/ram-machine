@@ -33,14 +33,14 @@ import pl.pitcer.rammachine.instruction.result.OkResult
 class ReadInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override val name: String = "read"
 
 	override fun make(): InstructionResult {
 		val inputTapeValue = this.ramMachine.readFromInputTape()
-		val argumentValue = this.argument.value.toInt()
+		val argumentValue = this.argument?.value?.toInt() ?: throw RuntimeException()
 		this.ramMachine.putInMemory(argumentValue, inputTapeValue)
 		return OkResult()
 	}

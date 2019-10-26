@@ -34,13 +34,14 @@ import pl.pitcer.rammachine.instruction.result.OkResult
 abstract class ArithmeticInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override fun make(): InstructionResult {
 		val accumulatorValue = this.ramMachine.getFromAccumulator()
-		val argumentValue = this.argument.value.toInt()
-		val value = when (this.argument.flag) {
+		val argument = this.argument ?: throw RuntimeException()
+		val argumentValue = argument.value.toInt()
+		val value = when (argument.flag) {
 			ArgumentFlag.MEMORY_REFERENCE -> this.ramMachine.getFromMemory(argumentValue)
 			ArgumentFlag.VALUE -> argumentValue
 			ArgumentFlag.INDIRECT_ADDRESSING -> this.ramMachine.getFromMemoryIndirect(argumentValue)

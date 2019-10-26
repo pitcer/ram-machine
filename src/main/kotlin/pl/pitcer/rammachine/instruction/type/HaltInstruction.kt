@@ -33,7 +33,7 @@ import pl.pitcer.rammachine.instruction.result.InstructionResult
 class HaltInstruction(
 	override val ramMachine: RamMachine,
 	override val label: String?,
-	override val argument: InstructionArgument
+	override val argument: InstructionArgument?
 ) : Instruction {
 
 	override val name: String = "halt"
